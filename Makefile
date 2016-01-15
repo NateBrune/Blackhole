@@ -21,7 +21,7 @@ src/boot.o: src/boot.s
 		i686-elf-gcc -c $< -o $@ $(CFLAGS)
 
 clean:
-		$(RM) src/*.o src/*.bin src/*~ build/*.bin build/*.iso build/grubfiles/*.bin
+		$(RM) src/*.o src/*.bin src/*~ build/*.bin build/*.iso build/grubfiles/boot/*.bin
 
 run: kernel.bin
 		qemu-system-i386 -kernel build/$<
