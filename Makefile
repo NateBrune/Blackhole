@@ -12,11 +12,9 @@ CFLAGS := -ffreestanding -O2 -I $(INCLUDE) $(WARNINGS)
 all: kernel.bin
 
 kernel.bin: $(C_OBJECTS) $(AS_OBJECTS)
-		echo $(OBJECTS)
 		i686-elf-gcc -T linker.ld -o build/$@ -nostdlib $(CFLAGS) $(OBJECTS)
 
 src/boot.o: src/boot.s	
-	
 	i686-elf-as $< -o $@
 
 %.o: %.c
