@@ -8,7 +8,7 @@
 %macro ISR_NOERRCODE 1
   global isr%1
   isr%1:
-    cli                         ; Disable interrupts firstly.
+                                ; Disable interrupts firstly.
     push 0                 ; Push a dummy error code.
     push %1                ; Push the interrupt number.
     jmp isr_common_stub         ; Go to our common handler code.
@@ -19,7 +19,7 @@
 %macro ISR_ERRCODE 1
   global isr%1
   isr%1:
-    cli                         ; Disable interrupts.
+                                ; Disable interrupts.
     push %1                ; Push the interrupt number
     jmp isr_common_stub
 %endmacro
@@ -113,7 +113,6 @@ isr_common_stub:
     popa                     ; Pops edi,esi,ebp...
     add esp, 8     ; Cleans up the pushed error code and pushed ISR number
 
-    sti
     iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
 
 ; In isr.c
@@ -145,5 +144,5 @@ irq_common_stub:
     popa                     ; Pops edi,esi,ebp...
     add esp, 8     ; Cleans up the pushed error code and pushed ISR number
 
-    sti
+    
     iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
