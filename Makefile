@@ -6,7 +6,7 @@ AS_OBJECTS=$(AS_SOURCES:.s=.o)
 ASFLAGS=-felf32
 OBJECTS=$(C_OBJECTS) $(AS_OBJECTS)
 WARNINGS := -Wall -Wextra
-CFLAGS := -ffreestanding -O2 -I $(INCLUDE) $(WARNINGS)
+CFLAGS := -ffreestanding -O2 -g -I $(INCLUDE) $(WARNINGS)
 
 .PHONY: all clean dist check testdrivers todolist
 
@@ -16,7 +16,7 @@ kernel.bin: $(C_OBJECTS) $(AS_OBJECTS)
 		i686-elf-gcc -T linker.ld -o build/$@ -nostdlib $(CFLAGS) $(OBJECTS)
 
 %.o: %.s
-	nasm $(ASFLAGS) $< -o $@
+		nasm $(ASFLAGS) $< -o $@
 
 %.o: %.c
 		i686-elf-gcc -c $< -o $@ $(CFLAGS)
@@ -28,5 +28,7 @@ run: kernel.bin
 		qemu-system-i386 -kernel build/$<
 
 iso: kernel.bin
-		 cp build/$< iso
-		 grub-mkrescue -o build/kernel.iso build/grubfiles
+		cp build/$< build/grubfiles/boot/kernel.bin
+		grub-mkrescue -o build/kernel.iso build/grubfiles
+runiso: iso
+		qemu-system-i386 -cdrom build/kernel.iso

@@ -63,14 +63,13 @@ _start:
 	call kmain
 
 	;jmp $
-
+	
 	; In case the function returns, we'll want to put the computer into an
 	; infinite loop. To do that, we use the clear interrupt ('cli') instruction
 	; to disable interrupts, the halt instruction ('hlt') to stop the CPU until
 	; the next interrupt arrives, and jumping to the halt instruction if it ever
 	; continues execution, just to be safe.
 	cli
-	jmp .hang
 .hang:
 	hlt
 	jmp .hang

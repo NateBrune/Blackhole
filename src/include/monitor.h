@@ -15,4 +15,10 @@ void monitor_clear();
 // Output a null-terminated ASCII string to the monitor.
 void monitor_write(char *c);
 
+// Output a null-terminated hexadecimal interger to the monitor.
+void monitor_write_hex(u32int n);
+
+// Output a null-terminated decimal interger to the monitor
+void monitor_write_dec(u32int n);
+
 #endif // MONITOR_H
