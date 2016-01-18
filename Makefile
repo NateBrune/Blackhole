@@ -3,7 +3,7 @@ C_SOURCES=$(wildcard src/*.c)
 C_OBJECTS=$(C_SOURCES:.c=.o)
 AS_SOURCES=$(wildcard src/*.s)
 AS_OBJECTS=$(AS_SOURCES:.s=.o)
-ASFLAGS=-felf32
+ASFLAGS=-felf32 -F dwarf
 OBJECTS=$(C_OBJECTS) $(AS_OBJECTS)
 WARNINGS := -Wall -Wextra
 CFLAGS := -ffreestanding -O2 -g -I $(INCLUDE) $(WARNINGS)
