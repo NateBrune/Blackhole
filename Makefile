@@ -6,7 +6,7 @@ AS_OBJECTS=$(AS_SOURCES:.s=.o)
 ASFLAGS=-felf32 -F dwarf
 OBJECTS=$(C_OBJECTS) $(AS_OBJECTS)
 WARNINGS := -Wall -Wextra
-CFLAGS := -ffreestanding -O2 -g -I $(INCLUDE) $(WARNINGS)
+CFLAGS := -ffreestanding -g -nostdlib -I $(INCLUDE) $(WARNINGS)
 
 .PHONY: all clean dist check testdrivers todolist
 

@@ -1,17 +1,15 @@
 %macro ISR_NOERRCODE 1  ; define a macro, taking one parameter
   global isr%1        ; %1 accesses the first parameter.
   isr%1:
-    cli
-    push byte 0
-    push byte %1
+    push 0
+    push %1
     jmp isr_common_stub
 %endmacro
 
 %macro ISR_ERRCODE 1
   global isr%1
   isr%1:
-    cli
-    push byte %1
+    push %1
     jmp isr_common_stub
 %endmacro
 
@@ -30,23 +28,13 @@ ISR_ERRCODE   11
 ISR_ERRCODE   12
 ISR_ERRCODE   13
 ISR_ERRCODE   14
-ISR_NOERRCODE 15
-ISR_NOERRCODE 16
-ISR_NOERRCODE 17
-ISR_NOERRCODE 18
-ISR_NOERRCODE 19
-ISR_NOERRCODE 20
-ISR_NOERRCODE 21
-ISR_NOERRCODE 22
-ISR_NOERRCODE 23
-ISR_NOERRCODE 24
-ISR_NOERRCODE 25
-ISR_NOERRCODE 26
-ISR_NOERRCODE 27
-ISR_NOERRCODE 28
-ISR_NOERRCODE 29
-ISR_NOERRCODE 30
-ISR_NOERRCODE 31
+
+; Repeat ISR_NOERRCODE's up to interrupt 48.
+%assign i 15
+%rep 48-15
+ISR_NOERRCODE i
+%assign i i+1
+%endrep
 
 ; In isr.c
 extern isr_handler
@@ -66,7 +54,9 @@ isr_common_stub:
    mov fs, ax
    mov gs, ax
 
+   push esp         ; Push pointer to the stack as x86_regs_t* arg.
    call isr_handler
+   add esp, 4       ; Clean up x86_regs_t* argument from stack.
 
    pop eax        ; reload the original data segment descriptor
    mov ds, ax
@@ -76,5 +66,4 @@ isr_common_stub:
 
    popa                     ; Pops edi,esi,ebp...
    add esp, 8     ; Cleans up the pushed error code and pushed ISR number
-   sti
    iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
