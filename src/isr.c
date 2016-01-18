@@ -26,7 +26,7 @@ void isr_handler(registers_t *regs)
         outb(0x20, 0x20);  // for pic
         return;
     }
-    monitor_write("recieved unregistered interrupt: ", black);  // only for unregistered interrupts.
+    monitor_write("recieved unregistered interrupt: ", white);  // only for unregistered interrupts.
     monitor_write_dec(regs->int_no, red);
     monitor_put('\n',white);
     outb(0xa0, 0x20); // for pic1
