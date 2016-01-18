@@ -23,29 +23,31 @@
 ; isr and irq are nearly same so I have only ony common stub.
 ;  referene taken from http://www.jamesmolloy.co.uk/tutorial_html/5.-IRQs%20and%20the%20PIT.html
 isr_common_stub:
-    pusha
-    push ds
-    push es
-    push fs
-    push gs
-    mov ax, 0x10   ; Load the Kernel Data Segment descriptor!
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    mov eax, esp   ; Push us the stack
-    push eax
-    mov eax, isr_handler
-    call eax       ; A special call, preserves the 'eip' register
-    pop eax
-    pop gs
-    pop fs
-    pop es
-    pop ds
-    popa
-    add esp, 8     ; Cleans up the pushed error code and pushed ISR number
-    iret           ; pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP!i
+        pusha
 
+        mov ax, ds              ; We can't push '%ds' directly, need to spill
+        push eax                ; to a temporary.
+
+        mov ax, 0x10            ; 0x10 is the kernel data selector.
+        mov ds, ax
+        mov es, ax
+        mov fs, ax
+        mov gs, ax
+
+        push esp                ; Push pointer to the stack as x86_regs_t* arg.
+        call isr_handler
+        add esp, 4              ; Clean up x86_regs_t* argument from stack.
+      
+        pop eax
+        mov ds, ax
+        mov es, ax
+        mov fs, ax
+        mov gs, ax
+
+        popa
+        add esp, 8
+
+        iret
 
 ; these are called by cpu
 

@@ -18,7 +18,7 @@ void register_interrupt_handler(u8int n, isr_t handler)
 // This gets called from our ASM interrupt handler stub.
 void isr_handler(registers_t *regs)
 {
-    if(interrupt_handlers[regs->int_no] )
+    if(interrupt_handlers[regs->int_no])
     {
         isr_t fun = interrupt_handlers[regs->int_no];
         fun(regs);
