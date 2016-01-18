@@ -60,6 +60,7 @@ _start:
 	; assembly file, so we'll create a kernel.c file in a moment. In that file,
 	; we'll create a C entry point called kernel_main and call it here.
 	extern kmain
+	sti
 	call kmain
 
 	;jmp $

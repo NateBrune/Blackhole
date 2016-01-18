@@ -3,6 +3,7 @@
 //             but rewritten for JamesM's kernel tutorials.
 
 #include "monitor.h"
+#include "common.h"
 
 // The VGA framebuffer starts at 0xB8000.
 u16int *video_memory = (u16int *)0xB8000;
@@ -52,13 +53,13 @@ static void scroll()
 }
 
 // Writes a single character out to the screen.
-void monitor_put(char c)
+void monitor_put(char c, u8int color)
 {
     // The background colour is black (0), the foreground is white (15).
-    u8int backColour = 0;
-    u8int foreColour = 15;
+    u8int backColour = black;
+    u8int foreColour = color;
 
-    // The attribute byte is made up of two nibbles - the lower being the 
+    // The attribute byte is made up of two nibbles - the lower being the
     // foreground colour, and the upper the background colour.
     u8int  attributeByte = (backColour << 4) | (foreColour & 0x0F);
     // The attribute byte is the top 8 bits of the word we have to send to the
@@ -118,7 +119,7 @@ void monitor_put(char c)
 void monitor_clear()
 {
     // Make an attribute byte for the default colours
-    u8int attributeByte = (0 /*black*/ << 4) | (15 /*white*/ & 0x0F);
+    u8int attributeByte = (black /*black*/ << 4) | (15 /*white*/ & 0x0F);
     u16int blank = 0x20 /* space */ | (attributeByte << 8);
 
     int i;
@@ -134,20 +135,20 @@ void monitor_clear()
 }
 
 // Outputs a null-terminated ASCII string to the monitor.
-void monitor_write(char *c)
+void monitor_write(char *c, u8int color)
 {
     int i = 0;
     while (c[i])
     {
-        monitor_put(c[i++]);
+        monitor_put(c[i++], color);
     }
 }
 
-void monitor_write_hex(u32int n)
+void monitor_write_hex(u32int n, u8int color)
 {
     s32int tmp;
 
-    monitor_write("0x");
+    monitor_write("0x", color);
 
     char noZeroes = 1;
 
@@ -159,37 +160,37 @@ void monitor_write_hex(u32int n)
         {
             continue;
         }
-    
+
         if (tmp >= 0xA)
         {
             noZeroes = 0;
-            monitor_put (tmp-0xA+'a' );
+            monitor_put (tmp-0xA+'a', color );
         }
         else
         {
             noZeroes = 0;
-            monitor_put( tmp+'0' );
+            monitor_put( tmp+'0', color );
         }
     }
-  
+
     tmp = n & 0xF;
     if (tmp >= 0xA)
     {
-        monitor_put (tmp-0xA+'a');
+        monitor_put (tmp-0xA+'a', color);
     }
     else
     {
-        monitor_put (tmp+'0');
+        monitor_put (tmp+'0', color);
     }
 
 }
 
-void monitor_write_dec(u32int n)
+void monitor_write_dec(u32int n, u8int color)
 {
 
     if (n == 0)
     {
-        monitor_put('0');
+        monitor_put('0', color);
         return;
     }
 
@@ -211,6 +212,16 @@ void monitor_write_dec(u32int n)
     {
         c2[i--] = c[j++];
     }
-    monitor_write(c2);
+    monitor_write(c2, color);
 
+}
+
+void monitor_write_center(char *c, u8int color){
+    const char *s;
+    for (s=c;*s;++s){}
+    u16int remaining = (80-(s-c))/2;
+    for(int i = 0; i<remaining;i++){
+        monitor_write(" ", color);
+    }
+    monitor_write(c, color);
 }
