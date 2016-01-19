@@ -38,4 +38,7 @@ void monitor_write_hex(u32int n, u8int color);
 // Output a null-terminated decimal interger to the monitor
 void monitor_write_dec(u32int n, u8int color);
 
+// Output a null-terminated centered string to the monitor.
+void monitor_write_center(char *c, u8int color);
+
 #endif // MONITOR_H

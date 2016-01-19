@@ -2,6 +2,7 @@
 // From JamesM's kernel development tutorials.
 
 #include "common.h"
+#include "monitor.h"
 
 // Write a byte out to the specified port.
 void outb(u16int port, u8int value)
@@ -29,4 +30,36 @@ void *memset(void *s, char c, u32int n)
   for (i = 0; i < n; ++i)
     *(char *)(s++) = c;
   return s - n;
+}
+
+extern void panic(const char *message, const char *file, u32int line)
+{
+    // We encountered a massive problem and have to stop.
+    __asm volatile("cli"); // Disable interrupts.
+
+    monitor_write("PANIC(",red);
+    monitor_write(message,red);
+    monitor_write(") at ",red);
+    monitor_write(file,red);
+    monitor_write(":",red);
+    monitor_write_dec(line,red);
+    monitor_write("\n",red);
+    // Halt by going into an infinite loop.
+    for(;;);
+}
+
+extern void panic_assert(const char *file, u32int line, const char *desc)
+{
+    // An assertion failed, and we have to panic.
+    __asm volatile("cli"); // Disable interrupts.
+
+    monitor_write("ASSERTION-FAILED(",red);
+    monitor_write(desc,red);
+    monitor_write(") at ",red);
+    monitor_write(file,red);
+    monitor_write(":",red);
+    monitor_write_dec(line,red);
+    monitor_write("\n",red);
+    // Halt by going into an infinite loop.
+    for(;;);
 }

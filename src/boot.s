@@ -10,12 +10,14 @@ CHECKSUM    equ -(MAGIC + FLAGS)        ; checksum of above, to prove we are mul
 ; You don't need to understand all these details as it is just magic values that
 ; is documented in the multiboot standard. The bootloader will search for this
 ; magic sequence and recognize us as a multiboot kernel.
+[EXTERN end]
 section .multiboot
 align 4
 	dd MAGIC
 	dd FLAGS
 	dd CHECKSUM
 
+	dd end
 ; Currently the stack pointer register (esp) points at anything and using it may
 ; cause massive harm. Instead, we'll provide our own stack. We will allocate
 ; room for a small temporary stack by creating a symbol at the bottom of it,
