@@ -39,7 +39,7 @@ static void clear_frame(u32int frame_addr)
     u32int off = OFFSET_FROM_BIT(frame);
     frames[idx] &= ~(0x1 << off);
 }
-
+/*
 // Static function to test if a bit is set.
 static u32int test_frame(u32int frame_addr)
 {
@@ -48,7 +48,7 @@ static u32int test_frame(u32int frame_addr)
     u32int off = OFFSET_FROM_BIT(frame);
     return (frames[idx] & (0x1 << off));
 }
-
+*/
 // Static function to find the first free frame.
 static u32int first_frame()
 {
@@ -68,6 +68,8 @@ static u32int first_frame()
             }
         }
     }
+    PANIC("paging.c reached the end of first_frame!");
+    return 0;
 }
 
 // Function to allocate a frame.
@@ -107,7 +109,7 @@ void free_frame(page_t *page)
     }
 }
 
-void initialise_paging()
+void init_paging()
 {
     // The size of physical memory. For the moment we
     // assume it is 16MB big.
@@ -128,7 +130,7 @@ void initialise_paging()
     // inside the loop body we actually change placement_address
     // by calling kmalloc(). A while loop causes this to be
     // computed on-the-fly rather than once at the start.
-    int i = 0;
+    u32int i = 0;
     while (i < placement_address)
     {
         // Kernel code is readable but not writeable from userspace.
@@ -188,7 +190,7 @@ void page_fault(registers_t regs)
     int rw = regs.err_code & 0x2;           // Write operation?
     int us = regs.err_code & 0x4;           // Processor was in user-mode?
     int reserved = regs.err_code & 0x8;     // Overwritten CPU-reserved bits of page entry?
-    int id = regs.err_code & 0x10;          // Caused by an instruction fetch?
+    //int id = regs.err_code & 0x10;          // Caused by an instruction fetch?
 
     // Output an error message.
     monitor_write("Page fault! ( ", red);

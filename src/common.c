@@ -32,7 +32,7 @@ void *memset(void *s, char c, u32int n)
   return s - n;
 }
 
-extern void panic(const char *message, const char *file, u32int line)
+extern void panic(char *message, char *file, u32int line)
 {
     // We encountered a massive problem and have to stop.
     __asm volatile("cli"); // Disable interrupts.
@@ -48,7 +48,7 @@ extern void panic(const char *message, const char *file, u32int line)
     for(;;);
 }
 
-extern void panic_assert(const char *file, u32int line, const char *desc)
+extern void panic_assert(char *file, u32int line, char *desc)
 {
     // An assertion failed, and we have to panic.
     __asm volatile("cli"); // Disable interrupts.
