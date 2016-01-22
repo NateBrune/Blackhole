@@ -5,7 +5,6 @@
 #define MONITOR_H
 
 #include "common.h"
-
 #define black          0
 #define blue           1
 #define green          2
@@ -23,6 +22,7 @@
 #define yellow        14
 #define white         15
 
+
 // Write a single character out to the screen.
 void monitor_put(char c, u8int color);
 
@@ -31,14 +31,5 @@ void monitor_clear();
 
 // Output a null-terminated ASCII string to the monitor.
 void monitor_write(char *c, u8int color);
-
-// Output a null-terminated hexadecimal interger to the monitor.
-void monitor_write_hex(u32int n, u8int color);
-
-// Output a null-terminated decimal interger to the monitor
-void monitor_write_dec(u32int n, u8int color);
-
-// Output a null-terminated centered string to the monitor.
-void monitor_write_center(char *c, u8int color);
 
 #endif // MONITOR_H
