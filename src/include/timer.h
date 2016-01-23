@@ -5,6 +5,7 @@
 
 void init_timer(u32int frequency);
 
+void Sleep(u32int sec);
 u32int tick;
 
 #endif

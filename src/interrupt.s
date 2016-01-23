@@ -116,4 +116,4 @@ ISR_NOERRCODE 58
 ISR_NOERRCODE 59
 ISR_NOERRCODE 60
 
-ISR_NOERRCODE 254   ; this is for my default interrupts, I will attach all defaults to this 0xff
+ISR_NOERRCODE 64   ; this is for my default interrupts, I will attach all defaults to this 0xff
