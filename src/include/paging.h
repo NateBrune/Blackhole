@@ -55,6 +55,10 @@ void init_paging();
 **/
 void switch_page_directory(page_directory_t *new);
 
+void alloc_frame(page_t *page, int is_kernel, int is_writeable);
+
+void free_frame(page_t *page);
+
 /**
    Retrieves a pointer to the page required.
    If make == 1, if the page-table in which this page should
@@ -65,8 +69,6 @@ page_t *get_page(u32int address, int make, page_directory_t *dir);
 /**
    Handler for page faults.
 **/
-
-
-// static u32int test_frame(u32int frame_addr);
+//void page_fault(registers_t *regs);
 
 #endif

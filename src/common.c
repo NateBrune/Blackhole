@@ -1,5 +1,5 @@
 // common.c -- Defines some global functions.
-// From JamesM's kernel development tutorials.
+//             From JamesM's kernel development tutorials.
 
 #include <common.h>
 #include <monitor.h>
@@ -12,32 +12,78 @@ void outb(u16int port, u8int value)
 
 u8int inb(u16int port)
 {
-   u8int ret;
-   __asm volatile("inb %1, %0" : "=a" (ret) : "dN" (port));
-   return ret;
+    u8int ret;
+    __asm volatile("inb %1, %0" : "=a" (ret) : "dN" (port));
+    return ret;
 }
 
 u16int inw(u16int port)
 {
-   u16int ret;
-   __asm volatile ("inw %1, %0" : "=a" (ret) : "dN" (port));
-   return ret;
+    u16int ret;
+    __asm volatile ("inw %1, %0" : "=a" (ret) : "dN" (port));
+    return ret;
 }
 
-void *memset(void *s, char c, u32int n)
+void memset (void *dest, char val, unsigned int len)
 {
-   unsigned char* p=s;
-   while(n--)
-      *p++ = (unsigned char)c;
-   return s; 
+    char *p = (char *) dest;
+    for (; len != 0; --len) *p++ = val;
 }
 
+void memcpy (void *dest, const void *src, unsigned int len)
+{
+    const char *sp = (const char *)src;
+    char *dp = (char *)dest;
+    for(; len != 0; len--) *dp++ = *sp++;
+}
+
+int strlen (char *s)
+{
+    int i = 0;
+    while (*s++) i++;
+    return i;
+}
+
+int strcmp (char *str1, char *str2)
+{
+    while (*str1 != 0 && *str2 != 0)
+    {
+        if (*str1 != *str2)
+        {
+            return str1 - str2;
+        }
+
+        str1++; str2++;
+    }
+
+    return 0;
+}
+
+char *strcpy (char *dest, const char *src)
+{
+    do {
+        *dest++ = *src++;
+    } while (*src != 0);
+    return dest;
+}
+
+char *strncpy (char *dst, char *src, int n)
+{
+    int i = 0;
+    while (n--)
+    {
+        dst[i] = src[i];
+        i++;
+    }
+
+    return dst;
+}
 extern void panic(char *message, char *file, u32int line)
 {
     // We encountered a massive problem and have to stop.
     __asm volatile("cli"); // Disable interrupts.
 
-    monitor_write("PANIC(",red);
+    monitor_write("PANIC(", red);
     monitor_write(message,red);
     monitor_write(") at ",red);
     monitor_write(file,red);
