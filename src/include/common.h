@@ -1,5 +1,5 @@
 // common.h -- Defines typedefs and some global functions.
-//             From JamesM's kernel development tutorials.
+// From JamesM's kernel development tutorials.
 
 #ifndef COMMON_H
 #define COMMON_H
@@ -23,4 +23,6 @@ u16int inw(u16int port);
 extern void panic(char *message, char *file, u32int line);
 extern void panic_assert(char *file, u32int line, char *desc);
 
-#endif // COMMON_H
+void *memset(void *s, char c, u32int n);
+
+#endif
