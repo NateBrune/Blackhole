@@ -4,9 +4,9 @@
 //          Rewritten for JamesM's kernel development tutorials.
 //
 
-#include "common.h"
-#include "isr.h"
-#include "monitor.h"
+#include <common.h>
+#include <isr.h>
+#include <monitor.h>
 
 isr_t interrupt_handlers[256];
 

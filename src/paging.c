@@ -1,9 +1,9 @@
 // paging.c -- Defines the interface for and structures relating to paging.
 //             Written for JamesM's kernel development tutorials.
 
-#include "paging.h"
-#include "kheap.h"
-#include "monitor.h"
+#include <paging.h>
+#include <kheap.h>
+#include <monitor.h>
 
 // The kernel's page directory
 page_directory_t *kernel_directory=0;

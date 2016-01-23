@@ -1,8 +1,8 @@
-#include "monitor.h"
-#include "descriptor_tables.h"
-#include "timer.h"
-#include "paging.h"
-#include "keyboard.h"
+#include <monitor.h>
+#include <descriptor_tables.h>
+#include <timer.h>
+#include <paging.h>
+#include <keyboard.h>
 
 int kmain(struct multiboot *mboot_ptr)
 {

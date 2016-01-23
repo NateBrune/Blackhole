@@ -1,6 +1,6 @@
-#include "timer.h"
-#include "isr.h"
-#include "monitor.h"
+#include <timer.h>
+#include <isr.h>
+#include <monitor.h>
 
 static void timer_callback(registers_t *regs)
 {
