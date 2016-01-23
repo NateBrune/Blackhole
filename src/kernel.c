@@ -13,5 +13,5 @@ int kmain(struct multiboot *mboot_ptr)
     monitor_write("Initializing paging... ", white); initialise_paging(100); monitor_write("ok\n", green);
     u32int *ptr = (u32int*)0xA0000000;
     u32int do_page_fault = *ptr;
-    return 0;
+    return do_page_fault;
 }

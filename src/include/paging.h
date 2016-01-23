@@ -65,6 +65,6 @@ page_t *get_page(u32int address, int make, page_directory_t *dir);
 /**
    Handler for page faults.
 **/
-void page_fault(registers_t regs);
+
 
 #endif
