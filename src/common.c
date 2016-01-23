@@ -26,10 +26,10 @@ u16int inw(u16int port)
 
 void *memset(void *s, char c, u32int n)
 {
-  u32int i;
-  for (i = 0; i < n; ++i)
-    *(char *)(s++) = c;
-  return s - n;
+   unsigned char* p=s;
+   while(n--)
+      *p++ = (unsigned char)c;
+   return s; 
 }
 
 extern void panic(char *message, char *file, u32int line)
