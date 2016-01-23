@@ -39,9 +39,8 @@ static void clear_frame(u32int frame_addr)
     u32int off = OFFSET_FROM_BIT(frame);
     frames[idx] &= ~(0x1 << off);
 }
-
-// Static function to test if a bit is set.
 /*
+// Static function to test if a bit is set.
 static u32int test_frame(u32int frame_addr)
 {
     u32int frame = frame_addr/0x1000;
@@ -50,7 +49,6 @@ static u32int test_frame(u32int frame_addr)
     return (frames[idx] & (0x1 << off));
 }
 */
-
 // Static function to find the first free frame.
 static u32int first_frame()
 {
@@ -70,6 +68,7 @@ static u32int first_frame()
             }
         }
     }
+
     PANIC("Could not find first frame");
     return 0;
 }
@@ -111,6 +110,7 @@ void free_frame(page_t *page)
     }
 }
 
+
 static void page_fault(registers_t *regs)
 {
     // A page fault has occurred.
@@ -137,7 +137,8 @@ static void page_fault(registers_t *regs)
     PANIC("Page fault");
 }
 
-void initialise_paging()
+void init_paging()
+
 {
     // The size of physical memory. For the moment we
     // assume it is 16MB big.
@@ -204,6 +205,3 @@ page_t *get_page(u32int address, int make, page_directory_t *dir)
         return 0;
     }
 }
-
-
-
